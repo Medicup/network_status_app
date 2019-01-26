@@ -1,7 +1,8 @@
+import time
 from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
-
+import zipfile
 import smtplib
 import os
 import logger
@@ -14,54 +15,65 @@ def send_mail(archive_files):
     print(email)
 
     send_mail_status = True
-    while send_mail_status is True:
-        if os.listdir(logger.archive_directory):
-            logger.update_log_file('Found files in the archive-directory. Preparing to email them.')
-            from_email = "jest3rware@gmail.com"
-            from_password = "#E1T1OAOnY#aW2"
-            to_email = email
 
-            subject = "Test data"
-            message = "Hey there, your height is <strong>%s</strong>."
 
-            msg = MIMEText(message, "html")
-            msg["Subject"] = subject
-            msg["To"] = to_email
-            msg["From"] = from_email
-            file_list = os.listdir(logger.archive_directory)
-            for file in file_list:
-                path = os.path.abspath(os.path.join(logger.archive_directory,file))
-                #with open(file, 'rb') as export:
-                print(path)
-                #     csv_file = export.read()
-                # msg.add_attachment(csv_file)
+    logger.update_log_file('Found files in the archive-directory. Preparing to email them.')
+    from_email = "jest3rware@gmail.com"
+    from_password = "#E1T1OAOnY#aW2"
+    to_email = email
 
-            gmail = smtplib.SMTP("smtp.gmail.com", 587)
-            gmail.ehlo()
-            gmail.starttls()
-            gmail.login(from_email, from_password)
+    subject = "Test data"
+    message = "Test message."
 
-            archive_file_list = []
-            for archive_file in archive_files:
-                if archive_file.endswith(".zip"):
-                    archive_file_list.append(archive_file)
-            if archive_file_list is not None:
+    #msg = MIMEBase('application', 'zip')
+    msg = MIMEMultipart()
+
+    msg["Subject"] = subject
+    msg["To"] = to_email
+    msg["From"] = from_email
+
+    body = 'Test from body '
+
+    msg.attach(MIMEText(body, 'plain'))
+
+    gmail = smtplib.SMTP("smtp.gmail.com", 587)
+    gmail.ehlo()
+    gmail.starttls()
+    gmail.login(from_email, from_password)
+
+    zip_file_list = os.listdir(logger.archive_directory)
+
+
+    if os.listdir(logger.archive_directory):
+        for file_name in zip_file_list:
+            zip_path = os.path.abspath(os.path.join(logger.archive_directory, file_name))
+            attachment = open(zip_path, 'rb')
+
+            part = MIMEBase('application', 'octet-streaming')
+            part.set_payload(attachment.read())
+            part.add_header('Content-Disposition', 'attachment; filename= {}'.format(file_name))
+
+            msg.attach(part)
+
+        if os.listdir(logger.archive_directory) is not None:
+            try:
                 logger.update_log_file(
-                    "Sending the following archived files by email: {}".format(
-                        archive_file_list
+                    "Sending the following archived test by email: {}".format(
+                        zip_file_list
                     )
                 )
-            else:
-                logger.update_log_file("There is nothing to send".format(archive_file_list))
 
-            try:
-                print('testing email send')
-                #gmail.send_message(msg)
-                logger.update_log_file('Archived files were sent')
-                #todo delete files
+                print('mail sent')
+                gmail.send_message(msg)
+                gmail.quit()
+                #logger.delete_log_files(logger.archive_directory)
 
+                print(
+                    'mail success'
+                )
+                time.sleep(15)
             except Exception as e:
-                logger.update_log_file('Sendmail error on archive export: {}'.format(e))
-                send_mail_status = False
+                print(e)
+
         else:
-            logger.update_log_file('No files were found in the archive folder. ')
+            logger.update_log_file("There is nothing to send from {}".format(logger.archive_directory))
