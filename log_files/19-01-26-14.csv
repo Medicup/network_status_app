@@ -1,0 +1,6 @@
+2019-01-26 14:34:12.996607--['archive-190126.zip', 'network_status_app.zip']: files found in the archived_files folder. 
+2019-01-26 14:34:12.996607--Found files in the archive-directory. Preparing to email them. 
+2019-01-26 14:34:14.528703--Sending the following archived test by email: ['archive-190126.zip', 'network_status_app.zip'] 
+2019-01-26 14:34:30.360240--Initiating URL check 
+2019-01-26 14:34:35.595037--LOG_OK-, Successful ping of, http://google.com, with status code - 200. 
+2019-01-26 14:34:40.826354--LOG_OK-, Successful ping of, http://google.com, with status code - 200. 
