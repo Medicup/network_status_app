@@ -12,7 +12,7 @@ def create_log_file(new_file):
 
 
 def update_log_file(message):
-    log_line = "{}--{} \n".format(datetime.datetime.now(), message)
+    log_line = "{},{} \n".format(datetime.datetime.now(), message)
     file = str("{}".format(datetime.datetime.now().strftime("%y-%m-%d-%H")))
     file_name = os.path.abspath("{}{}.csv".format(static_references.log_directory, file))
     if os.path.isfile(file_name) is True:
@@ -36,6 +36,8 @@ def delete_log_files():
         update_log_file('Successfully emptied {}.'.format(static_references.log_directory))
     except Exception as e:
             update_log_file('***ERROR***,Unable to remove files from ,{},{}'.format(static_references.log_directory, e))
+
+
 
 
 

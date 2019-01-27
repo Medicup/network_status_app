@@ -9,7 +9,7 @@ ip_address = "8.8.8.8"
 def main():
     send_mail.send_mail()
     update_log_file('Starting program.py')
-    #ping_check(url, ip_address)
+    ping_check(url, ip_address)
 
 
 if __name__ == "__main__":

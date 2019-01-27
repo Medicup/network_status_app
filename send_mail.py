@@ -1,23 +1,18 @@
 import datetime
 import mimetypes
-from email.mime.text import MIMEText
 from email.mime.base import MIMEBase
 from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import zipfile
 import smtplib
 import os
-import logger
 import glob
-import pathlib
 from email import encoders
-import socket
 import static_references
 import credentials
 
-
-
 body = []
-
+body.append('Initiating email log:')
 
 def send_mail(email=static_references.default_email):
     zip_files()
@@ -25,8 +20,7 @@ def send_mail(email=static_references.default_email):
 
 
 def message_body_update(message):
-    time_stamp = datetime.datetime.now().strftime('%y-%m-%d-%H: ')
-    message_body = (time_stamp, message)
+    message_body = ('log entry at {}: {} \n'.format(static_references.time_stamp, message))
     body.append(message_body)
 
 
@@ -70,9 +64,8 @@ def check_for_content_to_mail(email):
 
 
 def create_error_log(message):
-    time_stamp = datetime.datetime.now().strftime(('%y-%m-%d-%H:%M'))
     day_stamp = datetime.datetime.now().strftime(('%y-%m-%d-%H'))
-    log_line = "{}, {} \n".format(time_stamp, message)
+    log_line = "{}, {} \n".format(static_references.time_stamp, message)
     file_name = os.path.abspath("{}error_log{}.csv".format(static_references.log_directory, str(day_stamp)))
 
     if os.path.isfile(file_name) is True:
@@ -115,26 +108,29 @@ def mailer(zipped_list, email=static_references.default_email):
         except IOError as e:
             create_error_log('{},{}'.format(e, func_name))
 
+    message = str(body)
+
+    msg.attach(MIMEText(message, 'plain'))
     gmail = smtplib.SMTP("smtp.gmail.com", 587)
     gmail.ehlo()
     gmail.starttls()
     gmail.login(from_email, from_password)
 
     try:
-        print('try mail')
         gmail.send_message(msg)
-        print('success')
         message_body_update('Mail successfully sent.')
         gmail.quit()
 
         try:
             for f in glob.glob('*.zip'):
                 os.remove(f)
+            for f in glob.glob('log_files/*'):
+                os.remove(f)
         except OSError as e:
             create_error_log('{}, {}'.format(e, func_name))
 
     except smtplib.SMTPAuthenticationError:
-        create_error_log('error: SMTPAuthenicationError, {}'.format(func_name))
+        create_error_log('error: SMTPAuthenticationError, {}'.format(func_name))
 
     except smtplib.SMTPServerDisconnected:
         create_error_log('error: The server unexpectedly disconnects, {}'.format(func_name))
