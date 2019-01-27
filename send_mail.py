@@ -8,14 +8,15 @@ import smtplib
 import os
 import logger
 from email.message import EmailMessage
+from email import encoders
 import socket
 
 default_email = 'medicup@gmail.com'
 
 
 def send_mail(email=default_email):
-#    check_for_content_to_mail()
     zip_files()
+    check_for_content_to_mail()
     #mailer()
 
 
@@ -48,16 +49,25 @@ def get_all_file_paths(directory):
 
 
 def check_for_content_to_mail():
-    if os.listdir(logger.archive_directory):
-        print('Found files in {}. Preparing to email them.'.format(logger.archive_directory))
-        logger.update_log_file('Found files in {}. Preparing to email them.'.format(logger.archive_directory))
-        mailer()
+    mail_list = []
+    if os.listdir('.'):
+        zip_list = os.listdir('.')
+        print(zip_list)
+        for file in zip_list:
+            if os.path.isfile(file) and '.zip' in file:
+                mail_list.append(file)
 
-    else:
-        logger.update_log_file('The {} directory is empty. Skipping email. '.format(logger.archive_directory))
+        print(mail_list)
+
+        if mail_list is not None:
+            logger.update_log_file('Located archive file(s) for export {}'.format(mail_list))
+            mailer(mail_list)
 
 
-def mailer():
+def mailer(mail_list):
+    archive_list = mail_list
+    print(archive_list)  # todo remove
+
     from_email = "jest3rware@gmail.com"
     from_password = "#E1T1OAOnY#aW2"
     to_email = default_email
@@ -65,36 +75,42 @@ def mailer():
     subject = "Network log files report"
     message = 'Attached is an archive file from {}'.format(socket.gethostname())
 
-    msg = MIMEBase('application', 'zip')
-    #msg = MIMEMultipart()
-
+    msg = MIMEMultipart()
     msg["Subject"] = subject
     msg["To"] = to_email
     msg["From"] = from_email
+    msg_body = message
+    msg.attach(MIMEText(msg_body, 'plain'))
 
-    body = 'Test from body '
-
-    msg.attach(MIMEText(body, 'plain'))
+    for file in mail_list:
+        zf = open(file, 'rb')
+        part = MIMEBase('application', "octet-stream")
+        part.set_payload(zf.read())
+        encoders.encode_base64(part)
+        part.add_header('Content-Disposition', 'attachment', filename='{}'.format(file))
+        msg.attach(part)
 
     gmail = smtplib.SMTP("smtp.gmail.com", 587)
     gmail.ehlo()
     gmail.starttls()
     gmail.login(from_email, from_password)
 
-    # zip_file_list = [file for file in os.listdir(folder_path)]
-    # for files in zip_file_list:
-    #     print(files)
-    #
-    # for file_name in zip_file_list:
-    #     zip_path = os.path.abspath(os.path.join(logger.archive_directory, file_name))
-    #     attachment = open(zip_path, 'rb')
-    #
-    #     part = MIMEBase('application', 'octet-streaming')
-    #     part.set_payload(attachment.read())
-    #     part.add_header('Content-Disposition', 'attachment; filename= {}'.format(file_name))
-    #
-    #     msg.attach(part)
-    #
+    try:
+        gmail.send_message(msg)
+        logger.update_log_file('Mail successfully sent.')
+        for file in mail_list:
+            os.remove(file)
+        gmail.quit()
+
+    except Exception as e:
+        print(e)
+
+
+
+
+
+
+
     # if os.listdir(logger.archive_directory) is not None:
     #     try:
     #         logger.update_log_file(
@@ -104,8 +120,7 @@ def mailer():
     #         )
     #
     #         print('mail sent')
-    #         gmail.send_message(msg)
-    #         gmail.quit()
+    #
     #         #logger.delete_log_files(logger.archive_directory)
     #
     #         print(
