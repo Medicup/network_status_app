@@ -56,6 +56,5 @@ def network_check(url):
                 "Returned unknown exception error, Attempts = {}, -local error code 904: {}".format(attempts, e)
             )
 
-
     time.sleep(30)
     ping_check(url)
