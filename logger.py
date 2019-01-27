@@ -19,8 +19,12 @@ def update_log_file(message):
         with open(file_name, "a", newline="") as log_file:
             log_file.writelines(log_line)
     else:
-        os.mkdir(static_references.log_directory)
+        try:
+            os.mkdir(static_references.log_directory)
+        except:
+            pass # directory already exists
         create_log_file(file_name)
+
 
 
 def delete_log_files():
