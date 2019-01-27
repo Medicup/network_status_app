@@ -9,7 +9,7 @@ import os
 import glob
 from email import encoders
 import static_references
-import email_credentials
+import credentials_email
 
 body = []
 body.append('Initiating email log:')
@@ -83,8 +83,8 @@ def mailer(zipped_list, email=static_references.default_email):
     archive_list = zipped_list
     message_body_update('files to archive: {}'.format(archive_list))
 
-    from_email = email_credentials.email
-    from_password = email_credentials.password
+    from_email = credentials_email.email
+    from_password =credentials_email.password
 
     subject = "Network log files report"
 
