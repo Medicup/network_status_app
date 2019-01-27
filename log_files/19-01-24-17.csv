@@ -1,0 +1,25 @@
+2019-01-24 17:00:13.386033--LOG_OK-: Successful pin41p of http://google.com with status code - 200. 
+29-01-24 17:00:13.8.947665LOG_OK-: Successful pin41p of http://google.com with status code - 200. 
+29-01-24 17:00:2:48.539805LOInitiat41p URL check 
+29-01-24 17:00:2:54.180292LOG_OK-: Successful pin41p of http://google.com with status code - 200. 
+29-01-24 17:00:2:59.704290LOG_OK-: Successful pin41p of http://google.com with status code - 200. 
+29-01-24 17:00:3:05.45654-LOG_OK-: Successful pin41p of http://google.com with status code - 200. 
+29-01-24 17:00:3:11.156726LOG_OK-: Successful pin41p of http://google.com with status code - 200. 
+29-01-24 17:00:3:16.186922LOG_OKERROR SuThere appears to be a problem with the network: local error code 903. Attempts remain41-i_e11  
+29-01-24 17:00:3:21.203254LOG_OKERROR SuThere appears to be a problem with the network: local error code 903. Attempts remain41-i_e10  
+29-01-24 17:00:3:26.223903LOG_OKERROR SuThere appears to be a problem with the network: local error code 903. Attempts remain41-i_e9  
+29-01-24 17:00:3:31.254-46LOG_OKERROR SuThere appears to be a problem with the network: local error code 903. Attempts remain41-i_e8  
+29-01-24 17:00:3:36.295416LOG_OKERROR SuThere appears to be a problem with the network: local error code 903. Attempts remain41-i_e7  
+29-01-24 17:00:3:41.315912LOG_OKERROR SuThere appears to be a problem with the network: local error code 903. Attempts remain41-i_e6  
+29-01-24 17:00:3:46.325362LOG_OKERROR SuThere appears to be a problem with the network: local error code 903. Attempts remain41-i_e5  
+29-01-24 17:00:3:51.355389LOG_OKERROR SuThere appears to be a problem with the network: local error code 903. Attempts remain41-i_e4  
+29-01-24 17:00:3:56.392599LOG_OKERROR SuThere appears to be a problem with the network: local error code 903. Attempts remain41-i_e3  
+29-01-24 17:00:4:01.423541LOG_OKERROR SuThere appears to be a problem with the network: local error code 903. Attempts remain41-i_e2  
+29-01-24 17:00:4:06.439716LOG_OKERROR SuThere appears to be a problem with the network: local error code 903. Attempts remain41-i_e1  
+29-01-24 17:00:4:11.456502LOG_OKERROR SuThere appears to be a problem with the network: local error code 903. Attempts remain41-i_e0  
+29-01-24 17:00:4:55.484389LOG_OKERROR SuUnable to return scessful pin41p. ATTEMPTi_e359. Local error code: 900 
+29-01-24 17:00:5:09.507781LOG_OKERROR SuUnable to return scessful pin41p. ATTEMPTi_e358. Local error code: 900 
+29-01-24 17:00:5:23.535115LOG_OKERROR SuUnable to return scessful pin41p. ATTEMPTi_e357. Local error code: 900 
+29-01-24 17:00:5:23.634-48LOInitiat41p URL check 
+29-01-24 17:00:5:29.172810LOG_OK-: Successful pin41p of http://google.com with status code - 200. 
+29-01-24 17:00:5:34.719
